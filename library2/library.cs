@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 
+using System.Configuration; // для App.config
+
 namespace library2
 {
 	internal class Library
@@ -14,7 +16,9 @@ namespace library2
 		string connection_string;
 		SqlConnection connection;
 		public SqlCommand cmd { get; set; }
-
+		public Library():this(ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString) {
+            Console.WriteLine(connection_string);
+        }
 		public Library(string connection_string) {
 			this.connection_string = connection_string;
 			connection = new SqlConnection(connection_string);
@@ -26,12 +30,31 @@ namespace library2
 			{
 				connection.Open();
 				string command = $@"
-				IF NOT EXISTS (SELECT author_id FROM Authors WHERE last_name = '{last_name}' AND first_name = '{first_name}') 
+				IF NOT EXISTS (SELECT author_id FROM Authors WHERE last_name = @paramLastName AND first_name = @paramFirstName) 
 				BEGIN	
 						INSERT INTO Authors(last_name, first_name)
-						VALUES ('{last_name}', '{first_name}')
+						VALUES (@paramLastName, @paramFirstName)
 				END";
 				cmd = new SqlCommand(command, connection);
+
+				//				params
+
+				//SqlParameter sqlParameterLastName = new SqlParameter("paramLastName", SqlDbType.NVarChar);
+				//SqlParameter sqlParameterFirstName = new SqlParameter("paramFirstName", SqlDbType.NVarChar);
+				//sqlParameterLastName.Value = last_name;
+				//sqlParameterFirstName.Value = first_name;
+				//cmd.Parameters.Add(sqlParameterLastName);
+				//cmd.Parameters.Add(sqlParameterFirstName);
+
+				//SqlParameter[] values = new SqlParameter[]
+				//{
+				//	new SqlParameter("paramLastName", last_name),
+				//	new SqlParameter("paramFirstName", first_name)
+				//};
+
+
+				cmd.Parameters.AddWithValue("paramLastName", last_name);
+				cmd.Parameters.AddWithValue("paramFirstName", first_name);
 				cmd.ExecuteNonQuery();
 			}
 			finally
