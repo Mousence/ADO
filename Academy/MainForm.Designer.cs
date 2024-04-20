@@ -39,9 +39,13 @@
 			this.tabPageGroups = new System.Windows.Forms.TabPage();
 			this.tabPageSchedule = new System.Windows.Forms.TabPage();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabelStudents = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusLabelGroups = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl1.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewStudents)).BeginInit();
+			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -59,6 +63,7 @@
 			// 
 			// tabPageStudents
 			// 
+			this.tabPageStudents.Controls.Add(this.statusStrip1);
 			this.tabPageStudents.Controls.Add(this.dataGridViewStudents);
 			this.tabPageStudents.Controls.Add(this.btnAdd);
 			this.tabPageStudents.Controls.Add(this.comboBoxDirections);
@@ -161,6 +166,29 @@
 			this.tabPageTeachers.Text = "Учителя";
 			this.tabPageTeachers.UseVisualStyleBackColor = true;
 			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelStudents,
+            this.toolStripStatusLabelGroups});
+			this.statusStrip1.Location = new System.Drawing.Point(3, 399);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(786, 22);
+			this.statusStrip1.TabIndex = 10;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabelStudents
+			// 
+			this.toolStripStatusLabelStudents.Name = "toolStripStatusLabelStudents";
+			this.toolStripStatusLabelStudents.Size = new System.Drawing.Size(135, 17);
+			this.toolStripStatusLabelStudents.Text = "Количество студентов: ";
+			// 
+			// toolStripStatusLabelGroups
+			// 
+			this.toolStripStatusLabelGroups.Name = "toolStripStatusLabelGroups";
+			this.toolStripStatusLabelGroups.Size = new System.Drawing.Size(76, 17);
+			this.toolStripStatusLabelGroups.Text = "Всего групп:";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,6 +201,8 @@
 			this.tabPageStudents.ResumeLayout(false);
 			this.tabPageStudents.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewStudents)).EndInit();
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -190,5 +220,8 @@
 		private System.Windows.Forms.Label labelGroup;
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.DataGridView dataGridViewStudents;
+		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelStudents;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelGroups;
 	}
 }

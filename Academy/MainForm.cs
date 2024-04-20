@@ -88,8 +88,16 @@ namespace Academy
 		private void comboBoxStudentsGroups_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			LoadDataToGrid($"group_name = '{comboBoxStudentsGroups.SelectedItem.ToString()}'");
+			SetStatus();
 		}
+		private void SetStatus() {
 
+			toolStripStatusLabelStudents.Text = $"Количество студентов: {dataGridViewStudents.RowCount - 1}";
+			if (comboBoxDirections.SelectedItem?.ToString() == "Все")
+				toolStripStatusLabelGroups.Text = $"Всего групп: {comboBoxStudentsGroups.Items.Count-1}";
+			else
+				toolStripStatusLabelGroups.Text = $"Групп по выбранному направлению: {comboBoxStudentsGroups.Items.Count-1}";
+		}
 		private void comboBoxDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			//comboBoxStudentsGroups.Items.Clear();
@@ -99,9 +107,10 @@ namespace Academy
 				LoadDataToComboBox("Groups, Directions", "group_name", comboBoxStudentsGroups, condition);
 			}
 			else {
-				LoadDataToComboBox("Groups, Directions", "group_name", comboBoxStudentsGroups, condition);
+				LoadDataToComboBox("Groups, Directions", "group_name", comboBoxStudentsGroups);
 			}
 			LoadDataToGrid($"direction_name = '{comboBoxDirections.SelectedItem.ToString()}'");
+			SetStatus();
 		}
 	}
 }
