@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryDisconnected", "Libr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Police", "Police\Police.csproj", "{C98E474C-123B-40EC-BBC5-D05C051D8744}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy", "Academy\Academy.csproj", "{4F1988BD-43B1-42B7-A246-80B01F6E61EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C98E474C-123B-40EC-BBC5-D05C051D8744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C98E474C-123B-40EC-BBC5-D05C051D8744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C98E474C-123B-40EC-BBC5-D05C051D8744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F1988BD-43B1-42B7-A246-80B01F6E61EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F1988BD-43B1-42B7-A246-80B01F6E61EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F1988BD-43B1-42B7-A246-80B01F6E61EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F1988BD-43B1-42B7-A246-80B01F6E61EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

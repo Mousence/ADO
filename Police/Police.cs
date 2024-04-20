@@ -17,59 +17,80 @@ namespace Police
 	{
 		string connectionString;
 		SqlConnection connection;
-		SqlDataReader reader;
-		DataTable table;
+		SqlDataAdapter adapter;
+		SqlCommandBuilder builder;
+		DataSet set;
 		public Police()
 		{
 			InitializeComponent();
 
+			
 			connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
 			connection = new SqlConnection(connectionString);
 
 			MessageBox.Show(this, connection.ConnectionString, "ConnectrionString", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			richTextBox.SelectAll();
-			richTextBox.SelectionAlignment = HorizontalAlignment.Center;
 
-			string command = $@"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES";
-			SqlCommand cmd = new SqlCommand(command, connection);
-			connection.Open();
-			SqlDataReader reader = cmd.ExecuteReader();
-			while (reader.Read())
-			{
-				comboBoxTables.Items.Add(reader[0]);
+			btnAlterViolation.Enabled = false;
+			set = new DataSet();
+			LoadViolations();
+		}
+
+		void LoadViolations() 
+		{
+			string query = "SELECT * FROM Violations";
+			adapter = new SqlDataAdapter(query, connection);
+			builder = new SqlCommandBuilder(adapter);
+			adapter.Fill(set, "Violations");
+			dataGridView.DataSource = set.Tables[0];
+			query = "SELECT * FROM ResponsibilityTypes";
+			builder.DataAdapter.SelectCommand.CommandText = query;
+			adapter.Fill(set, "ResponsibilityTypes");
+			comboBoxViolationType.Items.Add("Все типы");
+			for (int i = 0; i < set.Tables[1].Rows.Count; i++) {
+				comboBoxViolationType.Items.Add(set.Tables[1].Rows[i].ItemArray[1].ToString());
 			}
-			connection.Close();
+			comboBoxViolationType.SelectedIndex = 0;
+
+			builder.DataAdapter.SelectCommand.CommandText = "SELECT  * FROM ViolationsResponsibilitiesRelation";
+			adapter.Fill(set, "ViolationsResponsibilitiesRelation");
 		}
 
-		private void btnExecute_Click(object sender, EventArgs e)
+		private void btnAddViolation_Click(object sender, EventArgs e)
 		{
-			string cmdLine = richTextBox.Text;
-			LoadDataToGrid(cmdLine);
+			adapter.Update(set, "Violations");
 		}
 
-		private void comboBoxTables_SelectedIndexChanged(object sender, EventArgs e)
+		private void comboBoxViolationType_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string command = $@"SELECT * FROM {comboBoxTables.SelectedItem.ToString()}";
-			LoadDataToGrid(command);
-		}
-		void LoadDataToGrid(string command)
-		{
-			SqlCommand cmd = new SqlCommand(command, connection);
-			connection.Open();
-			SqlDataReader reader = cmd.ExecuteReader();
-			table = new DataTable();
-			for (int i = 0; i < reader.FieldCount; i++) table.Columns.Add(reader.GetName(i));
-			while (reader.Read())
-			{
-				DataRow row = table.NewRow();
-				for (int i = 0; i < reader.FieldCount; i++)
-				{
-					row[i] = reader[i];
-				}
-				table.Rows.Add(row);
-			}
-			dataGridView.DataSource = table;
-			connection.Close();
+//			if (comboBoxViolationType.SelectedIndex == 0)
+//			{
+//				dataGridView.DataSource = set.Tables[0];
+//			}
+//			else
+//			{
+//				//string filter = $@"
+//				//ViolationsResponsibilitiesRelation.violation = Violations.violation_id
+//				//AND ViolationsResponsibilitiesRelation.responsibility = ResponsibilityTypes.type_id
+//				//AND ResponsibilityTypes.type_id = {comboBoxViolationType.SelectedIndex}";
+//				//DataRow[] results = set.Tables[0].Select(filter);
+//				//dataGridView.DataSource = results;
+
+//				builder.DataAdapter.SelectCommand.CommandText = $@"
+//SELECT * FROM Violations
+//JOIN	ViolationsResponsibilityReltion ON (violation = violation_id)
+//JOIN	ResponsibilityTypes ON (responsibility = type_id)
+//WHERE	ResponsibilityTypes.type_id = {comboBoxViolationType.SelectedIndex}
+//";
+//				set.Tables["ViolationByType"]?.Clear();
+//				adapter.Fill(set, "ViolationByType");
+//				dataGridView.DataSource = set.Tables["ViolationByType"];
+//			}
+
+//			DataViewManager manager = new DataViewManager(set);
+//			manager.DataViewSettings["Violations"].RowFilter = $"ViolationsResponsibilitiesRelation.type_id={comboBoxViolationType.SelectedIndex}";
+
+//			DataView view = manager.CreateDataView(set.Tables["Violations"]);
+//			dataGridView.DataSource = view;
 		}
 	}
 }
