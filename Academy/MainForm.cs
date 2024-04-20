@@ -36,11 +36,13 @@ namespace Academy
 			connection.Open();
 			string cmd = $@"SELECT	[Ф.И.О.] = FORMATMESSAGE('%s %s %s', last_name, first_name, middle_name),
 									[Дата Рождения] = birth_date,
-									[Группа]		   = group_name
+									[Группа]		   = group_name,
+									[Направление]		= direction_name
 									FROM Students
 									JOIN Groups		ON	[group]=group_id
 									JOIN Directions	ON	(direction=direction_id)";
-			if (condition != null) {
+		    if (condition != null && !condition.Contains("Все"))
+			{
 				cmd += $"WHERE {condition}";
 			}
 			Console.WriteLine(cmd);
@@ -60,23 +62,30 @@ namespace Academy
 			dataGridViewStudents.DataSource = table;
 			connection.Close();
 		}
-		void LoadDataToComboBox(string tables, string column, ComboBox list, string condition=null)
+		void LoadDataToComboBox(string tables, string column, ComboBox list, string condition = null)
 		{
-			connection.Open();
-			list.Items.Clear();
-			list.Items.Add("Все");
-			list.SelectedIndex = 0;
-			string cmd = $"SELECT {column} FROM {tables}";
-			if (condition!=null) {
-				cmd += $" WHERE {condition}";
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+				list.Items.Clear();
+				list.Items.Add("Все");
+				list.SelectedIndex = 0;
+				string cmd = $"SELECT DISTINCT {column} FROM {tables}";
+				if (condition != null)
+				{
+					cmd += $" WHERE {condition}";
+				}
+				using (SqlCommand command = new SqlCommand(cmd, connection))
+				{
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							list.Items.Add(reader[0]);
+						}
+					}
+				}
 			}
-			SqlCommand command = new SqlCommand(cmd, connection);
-			reader = command.ExecuteReader();
-			while (reader.Read()) {
-				list.Items.Add(reader[0]);
-			}
-			connection.Close();
-
 		}
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
