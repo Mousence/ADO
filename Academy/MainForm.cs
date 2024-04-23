@@ -121,5 +121,16 @@ namespace Academy
 			LoadDataToGrid($"direction_name = '{comboBoxDirections.SelectedItem.ToString()}'");
 			SetStatus();
 		}
+
+		private void btnAdd_Click(object sender, EventArgs e)
+		{
+			List<string> groupNames = new List<string>();
+			foreach (var item in comboBoxStudentsGroups.Items)
+			{
+				groupNames.Add(item.ToString());
+			}
+			Student form = new Student(connectionString, groupNames);
+			form.Show();
+		}
 	}
 }
