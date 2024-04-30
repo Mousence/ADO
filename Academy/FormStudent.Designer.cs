@@ -228,6 +228,7 @@
 			this.btnBrowse.TabIndex = 24;
 			this.btnBrowse.Text = "Обзор";
 			this.btnBrowse.UseVisualStyleBackColor = true;
+			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
 			// pictureBox1
 			// 
